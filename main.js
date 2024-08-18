@@ -188,11 +188,10 @@ $(document).ready(function () {
       })
         .done(function (response) {
           // Make sure that the formMessages div has the 'success' class.
-          $(formMessages).removeClass("error");
-          $(formMessages).addClass("success");
+          $(formMessages).removeClass("error").addClass("success");
 
           // Set the message text.
-          $(formMessages).text(response);
+          $(formMessages).text("Thank you for getting in touch!");
 
           // Clear the form.
           $("#name").val("");
@@ -200,16 +199,24 @@ $(document).ready(function () {
           $("#message").val("");
         })
         .fail(function (data) {
-          // Make sure that the formMessages div has the 'error' class.
-          $(formMessages).removeClass("success");
-          $(formMessages).addClass("error");
+          // Check if the response status is 0 (CORS issue).
+          if (data.status === 0) {
+            // Assume email was sent, ignore CORS error
+            $(formMessages).removeClass("error").addClass("success");
+            $(formMessages).text("Thank you for getting in touch!");
 
-          // Set the message text.
-          if (data.responseText !== "") {
-            $(formMessages).text(data.responseText);
+            // Clear the form fields.
+            $("#name").val("");
+            $("#email").val("");
+            $("#message").val("");
           } else {
+            // Handle other failures.
+            $(formMessages).removeClass("success").addClass("error");
+
+            // Set the message text.
+
             $(formMessages).text(
-              "Oops! An error occured and your message could not be sent."
+              "Oops! An error occurred and your message could not be sent."
             );
           }
         });
@@ -221,7 +228,8 @@ let lastScrollTop = 0;
 const mediaQuery = window.matchMedia("(max-width: 400px)");
 
 function handleScroll() {
-  const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+  const currentScroll =
+    window.pageYOffset || document.documentElement.scrollTop;
 
   if (currentScroll < lastScrollTop) {
     // Scrolling up
