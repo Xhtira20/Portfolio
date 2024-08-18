@@ -60,7 +60,7 @@ p {
 
 .nav-screen {
   height: 100%;
-  z-index: 500;
+  z-index: 10000;
   position: fixed;
   background-color: #000;
   opacity: 1;
@@ -718,7 +718,18 @@ label {
     left: 10px !important;
     margin-top: 10px;
   }
-  .nav-header.navbar{
+  .nav-header.navbar {
     backdrop-filter: blur(10px) !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .nav-header {
+    display: block;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+    
   }
 }

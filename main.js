@@ -216,3 +216,37 @@ $(document).ready(function () {
     });
   });
 });
+
+let lastScrollTop = 0;
+const mediaQuery = window.matchMedia("(max-width: 400px)");
+
+function handleScroll() {
+  const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+  if (currentScroll < lastScrollTop) {
+    // Scrolling up
+    document.querySelector(".nav-header").style.display = "block";
+  } else {
+    // Scrolling down
+    document.querySelector(".nav-header").style.display = "none";
+  }
+
+  lastScrollTop = currentScroll;
+}
+
+function checkMediaQuery() {
+  if (mediaQuery.matches) {
+    // If the media query matches (screen width is 400px or less)
+    window.addEventListener("scroll", handleScroll);
+  } else {
+    // Remove the event listener if the media query does not match
+    window.removeEventListener("scroll", handleScroll);
+    document.querySelector(".nav-header").style.display = "block"; // Ensure nav-header is visible when not on small screens
+  }
+}
+
+// Initial check
+checkMediaQuery();
+
+// Re-check on window resize
+mediaQuery.addListener(checkMediaQuery);
